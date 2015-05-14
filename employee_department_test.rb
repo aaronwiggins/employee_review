@@ -19,5 +19,35 @@ class EmployeeDepartmentTest < Minitest::Test
   def test_create_department_name
     assert_equal "Accounting", Department.new("Accounting").name
   end
+
+  def test_create_employee_name
+    assert_equal "Bob", Employee.new(name: "Bob",
+                                    email: "Bob@email.com",
+                                    phone_number: "9192223333",
+                                    salary: "95000").name
+  end
+
+  def test_create_employee_with_email
+    assert_equal "Bob@email.com", Employee.new(name: "Bob",
+                                    email: "Bob@email.com",
+                                    phone_number: "9192223333",
+                                    salary: "95000").email
+  end
+
+  def test_create_employee_phone_number
+    assert_equal "9192223333", Employee.new(name: "Bob",
+                                    email: "Bob@email.com",
+                                    phone_number: "9192223333",
+                                    salary: "95000").phone_number
+
+  end
+
+  def test_create_employee_salary
+    assert_equal "95000", Employee.new(name: "Bob",
+                                    email: "Bob@email.com",
+                                    phone_number: "9192223333",
+                                    salary: "95000").salary
+
+  end
+
 end
-# assert_equal "Bob", Employee.new("Bob").name
