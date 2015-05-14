@@ -21,7 +21,7 @@ class EmployeeDepartmentTest < Minitest::Test
   end
 
   def test_create_employee_name
-    assert_equal "Bob", Employee.new(name: "Bob").name
+    assert "Bob", Employee.new(name: "Bob").name
   end
 
   def test_create_employee_with_email
@@ -42,5 +42,15 @@ class EmployeeDepartmentTest < Minitest::Test
     name = Employee.new(name: "Bob")
     department = Department.new("Accounting")
     assert department.assign_employee(name)
+  end
+
+  def test_can_get_an_employee_name
+    e_name = Employee.new(name: "Bob").name
+    assert_equal "Bob", e_name
+  end
+
+  def test_can_get_an_employee_email
+    e_email = Employee.new(email: "fake@gmail.com").email
+    assert_equal "fake@gmail.com", e_email
   end
 end
