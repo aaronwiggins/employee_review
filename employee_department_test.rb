@@ -17,7 +17,7 @@ class EmployeeDepartmentTest < Minitest::Test
   end
 
   def test_create_department_name
-    assert_equal "Accounting", Department.new("Accounting").name
+    assert_equal "Accounting", Department.new("Accounting").division
   end
 
   def test_create_employee_name
@@ -50,4 +50,9 @@ class EmployeeDepartmentTest < Minitest::Test
 
   end
 
+  def test_department_can_be_given_an_employee
+    name = Employee.new(name: "Bob")                                  
+    department = Department.new("Accounting")
+    assert department.assign_employee(name)
+  end
 end
