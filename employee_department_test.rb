@@ -96,10 +96,10 @@ class EmployeeDepartmentTest < Minitest::Test
 
   def test_employee_has_good_or_bad_review
     employee_one = Employee.new(name: "Sam")
-    refute employee_one.rating == "good"
-    employee_two = Employee.new(name: "Sam", review_text: "She's a great employee")
-    assert "good", employee_two.rating
+    refute employee_one.review_rating == "good"
+    employee_two = Employee.new(name: "Jean", review_rating: "good")
+    assert "good", employee_two.review_rating
   end
 
-  
+
 end
