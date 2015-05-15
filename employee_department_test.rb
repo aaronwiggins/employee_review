@@ -25,38 +25,39 @@ class EmployeeDepartmentTest < Minitest::Test
   end
 
   def test_create_employee_with_email
-    assert_equal "Bob@email.com", Employee.new(email: "Bob@email.com").email
+    assert_equal "Bob@email.com", Employee.new(name: "Bob",email: "Bob@email.com").email
   end
 
   def test_create_employee_phone_number
-    assert_equal "9192223333",
-    Employee.new(phone_number: "9192223333").phone_number
+    assert_equal "9192223333", Employee.new(name: "Bill", phone_number: "9192223333").phone_number
 
   end
 
   def test_create_employee_salary
-    assert_equal 95000, Employee.new(salary: 95000).salary
-
+    salary = Employee.new(name: "Tina", salary: 95000).salary
+    assert_equal 95000, salary
   end
 
   def test_department_can_be_given_an_employee
     name = Employee.new(name: "Bob")
     department = Department.new("Accounting")
     assert department.assign_employee(name)
+    assert_equal [name], department.employees
   end
 
   def test_can_get_an_employee_name
-    e_name = Employee.new(name: "Bob").name
-    assert_equal "Bob", e_name
+    employee = Employee.new(name: "Bob")
+    assert_equal "Bob", employee.name
   end
 
   def test_can_get_an_employee_email
-    e_email = Employee.new(email: "fake@gmail.com").email
-    assert_equal "fake@gmail.com", e_email
+    employee = Employee.new(name: "Bill", email: "fake@gmail.com")
+    assert_equal "fake@gmail.com", employee.email
   end
 
   def test_can_get_a_department_name
-    assert_equal "Finance", Department.new("Finance").division
+    department = Department.new("Finance")
+    assert_equal "Finance", department.division
   end
 
   def test_get_department_salary_total
@@ -66,5 +67,36 @@ class EmployeeDepartmentTest < Minitest::Test
     employee_two = Employee.new(name: "Bill", salary: 80000).salary
     assert department.department_salary(employee_two)
     assert_equal employee_two + employee_one, department.totals
+  end
+
+  def test_employee_has_no_review_paperwork
+    employee = Employee.new(name: "Bob")#, review_text: "none")
+    assert_equal "", employee.review_text
+  end
+
+  def test_employee_has_review_text
+    employee = Employee.new(name: "Sam")
+    review = Employee.new(name: "Sam", review_text: "Sam demonstrates outstanding written
+    communications skills. She listens carefully, asks perceptive questions, and
+    quickly comprehends new or highly complex matters. She implements highly
+    effective and often innovative communication methods. Sam displays very good
+    verbal skills, communicating clearly and concisely. She is careful to keep
+    others informed in a timely manner.").review_text
+    assert employee
+    assert review
+    assert_equal "Sam demonstrates outstanding written
+    communications skills. She listens carefully, asks perceptive questions, and
+    quickly comprehends new or highly complex matters. She implements highly
+    effective and often innovative communication methods. Sam displays very good
+    verbal skills, communicating clearly and concisely. She is careful to keep
+    others informed in a timely manner.", review
+    assert employee.assign(review)
+    assert_equal [review], employee.review_file
+    # assert_equal "something", employee.review_text(
+    # assert_equal [employee.review_text], employee.review
+
+    # artist = Artist.new("The Jennifertones")
+    # album = Album.new("Chaos and Bunnies II")
+    # assert artist.assign(album)
   end
 end
