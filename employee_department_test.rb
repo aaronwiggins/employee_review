@@ -92,11 +92,14 @@ class EmployeeDepartmentTest < Minitest::Test
     others informed in a timely manner.", review
     assert employee.assign(review)
     assert_equal [review], employee.review_file
-    # assert_equal "something", employee.review_text(
-    # assert_equal [employee.review_text], employee.review
-
-    # artist = Artist.new("The Jennifertones")
-    # album = Album.new("Chaos and Bunnies II")
-    # assert artist.assign(album)
   end
+
+  def test_employee_has_good_or_bad_review
+    employee_one = Employee.new(name: "Sam")
+    refute employee_one.rating == "good"
+    employee_two = Employee.new(name: "Sam", review_text: "She's a great employee")
+    assert "good", employee_two.rating
+  end
+
+  
 end

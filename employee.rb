@@ -13,4 +13,10 @@ class Employee
       @review_file << text
     end
 
+    def rating
+      if review_file != []
+        return "good"
+      end
+    end
+
 end
