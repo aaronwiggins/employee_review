@@ -62,11 +62,11 @@ class EmployeeDepartmentTest < Minitest::Test
 
   def test_get_department_salary_total
     department = Department.new("Accounting")
-    employee_one = Employee.new(name: "Bob", salary: 75000).salary
-    assert department.department_salary(employee_one)
-    employee_two = Employee.new(name: "Bill", salary: 80000).salary
-    assert department.department_salary(employee_two)
-    assert_equal employee_two + employee_one, department.totals
+    employee_one = Employee.new(name: "Bob", salary: 75000)
+    assert department.assign_employee(employee_one)
+    employee_two = Employee.new(name: "Bill", salary: 80000)
+    assert department.assign_employee(employee_two)
+    assert_equal 155000, department.department_salaries
   end
 
   def test_employee_has_no_review_paperwork
@@ -112,5 +112,22 @@ class EmployeeDepartmentTest < Minitest::Test
     assert_equal 80000*1.03, employee_one.salary
   end
 
+  def test_add_employees_to_department
+    employee_one = Employee.new(name: "Bob", salary: 75000, review_rating: "good")
+    department = Department.new("Accounting")
+    employee_two = Employee.new(name: "Jean", salary: 80000, review_rating: "bad")
+    employee_three = Employee.new(name: "Kim", salary: 85000, review_rating: "bad")
+    employee_four = Employee.new(name: "Son", salary: 90000, review_rating: "good")
+    department.assign_employee(employee_one)
+    department.assign_employee(employee_two)
+    department.assign_employee(employee_three)
+    department.assign_employee(employee_four)
+
+    assert_equal [employee_one, employee_two, employee_three, employee_four],
+    department.employees
+    assert_equal 330000, department.department_salaries
+    department.distribute_raise(5000)
+    assert_equal 335000, department.department_salaries
+  end
 
 end

@@ -1,5 +1,6 @@
 class Employee
-  attr_reader :name, :email, :phone_number, :salary, :review_text, :review_file, :review_rating
+  attr_accessor :salary
+  attr_reader :name, :email, :phone_number, :review_text, :review_file, :review_rating
     def initialize(name:, email: "", phone_number: "", salary: 0, review_text: "", review_rating: "")
       @name = name
       @email = email
@@ -20,17 +21,6 @@ class Employee
 
     def give_raise(percent)
       @salary += percent * @salary
-
     end
-    # def rating
-    #   # review_file.empty? ? "bad" : "good"
-    #   # rate = review_file.all? {|r| r != []}
-    #   # rate ? "good" : "bad"
-    #   # if review_file != []
-    #   #   return "good"
-    #   # else
-    #   #   "bad"
-    #   # end
-    # end
 
 end
