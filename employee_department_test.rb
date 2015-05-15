@@ -101,5 +101,16 @@ class EmployeeDepartmentTest < Minitest::Test
     assert "good", employee_two.review_rating
   end
 
+  def test_does_employee_deserve_a_raise
+    employee_two = Employee.new(name: "Jean", review_rating: "good")
+    assert_equal true, employee_two.deserve_raise
+  end
+
+  def test_employee_receives_salary_raise
+    employee_one = Employee.new(name: "Jean", salary: 80000, review_rating: "good")
+    employee_one.give_raise(0.03)
+    assert_equal 80000*1.03, employee_one.salary
+  end
+
 
 end

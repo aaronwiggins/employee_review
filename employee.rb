@@ -8,13 +8,20 @@ class Employee
       @review_text = review_text
       @review_file = []
       @review_rating = review_rating
-
     end
 
     def assign(text)
       @review_file << text
     end
 
+    def deserve_raise
+      review_rating == "good" ? true : false
+    end
+
+    def give_raise(percent)
+      @salary += percent * @salary
+
+    end
     # def rating
     #   # review_file.empty? ? "bad" : "good"
     #   # rate = review_file.all? {|r| r != []}
