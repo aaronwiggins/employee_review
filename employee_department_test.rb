@@ -70,7 +70,7 @@ class EmployeeDepartmentTest < Minitest::Test
   end
 
   def test_employee_has_no_review_paperwork
-    employee = Employee.new(name: "Bob")#, review_text: "none")
+    employee = Employee.new(name: "Bob")
     assert_equal "", employee.review_text
   end
 
@@ -112,22 +112,47 @@ class EmployeeDepartmentTest < Minitest::Test
     assert_equal 80000*1.03, employee_one.salary
   end
 
-  def test_add_employees_to_department
+  def test_add_employees_to_department_give_raise_to_good_employees
     employee_one = Employee.new(name: "Bob", salary: 75000, review_rating: "good")
-    department = Department.new("Accounting")
+    accounting = Department.new("Accounting")
     employee_two = Employee.new(name: "Jean", salary: 80000, review_rating: "bad")
     employee_three = Employee.new(name: "Kim", salary: 85000, review_rating: "bad")
     employee_four = Employee.new(name: "Son", salary: 90000, review_rating: "good")
-    department.assign_employee(employee_one)
-    department.assign_employee(employee_two)
-    department.assign_employee(employee_three)
-    department.assign_employee(employee_four)
+    accounting.assign_employee(employee_one)
+    accounting.assign_employee(employee_two)
+    accounting.assign_employee(employee_three)
+    accounting.assign_employee(employee_four)
 
     assert_equal [employee_one, employee_two, employee_three, employee_four],
-    department.employees
-    assert_equal 330000, department.department_salaries
-    department.distribute_raise(5000)
-    assert_equal 335000, department.department_salaries
+    accounting.employees
+
+    assert_equal 330000, accounting.department_salaries
+    accounting.distribute_raise(5000) {|employee| employee.review_rating == "good"}
+    assert_equal 335000, accounting.department_salaries
   end
+
+  def test_add_criteria_for_raise
+    employee_one = Employee.new(name: "Bob", salary: 75000, review_rating: "good")
+    accounting = Department.new("Accounting")
+    employee_two = Employee.new(name: "Jean", salary: 80000, review_rating: "good")
+    employee_three = Employee.new(name: "Kim", salary: 85000, review_rating: "good")
+    employee_four = Employee.new(name: "Son", salary: 90000, review_rating: "good")
+
+    accounting.assign_employee(employee_one)
+    accounting.assign_employee(employee_two)
+    accounting.assign_employee(employee_three)
+    accounting.assign_employee(employee_four)
+
+    assert_equal [employee_one, employee_two, employee_three, employee_four],
+    accounting.employees
+
+    assert_equal 330000, accounting.department_salaries
+    accounting.distribute_raise(10000) {|x| (x.salary < 85000)}
+    assert_equal 340000, accounting.department_salaries
+
+
+
+  end
+
 
 end

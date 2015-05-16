@@ -4,7 +4,6 @@ class Department
     def initialize(division)
       @division = division
       @employees = []
-      @salaries = []
     end
 
     def assign_employee(name)
@@ -14,17 +13,29 @@ class Department
 
     def department_salaries
       @employees.reduce(0) {|sum, e| e.salary + sum}
-      # @salaries_in_department = @employees.map {|e| e.salary}
       # @salaries_in_department.reduce(:+)
     end
 
-    def distribute_raise(amount)
-      good_employees = @employees.select {|r| r.review_rating == "good"}
+    def distribute_raise (amount)
+      # good_employees = @employees.each { |r| r.review_rating == "good" }
+      good_employees = @employees.select {|x| yield (x)}
       good_employees.each { |e| e.salary = e.salary + amount / good_employees.count }
-
     end
+
 end
 
+#
+# class SalaryLimit
+#
+#   def low_salary
+#     self.each do |item|
+#       yield(item)
+#     end
+#     new_array
+#   end
+#   @employees.low_salary { |salary| salary < 85000}
+#
+# end
 
 # class Array
 #   def translate
@@ -36,6 +47,4 @@ end
 #   end
 # end
 #
-# var = ["Dog", "Perro", "Hund"].translate do |word|
-#   word.upcase
-# end
+# var = ["Dog", "Perro", "Hund"].translate {|word| word.upcase}
