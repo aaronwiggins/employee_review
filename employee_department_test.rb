@@ -94,17 +94,17 @@ class EmployeeDepartmentTest < Minitest::Test
     assert_equal [review], employee.review_file
   end
 
-  def test_employee_has_good_or_bad_review
-    employee_one = Employee.new(name: "Sam")
-    refute employee_one.review_rating == "good"
-    employee_two = Employee.new(name: "Jean", review_rating: "good")
-    assert "good", employee_two.review_rating
-  end
-
-  def test_does_employee_deserve_a_raise
-    employee_two = Employee.new(name: "Jean", review_rating: "good")
-    assert_equal true, employee_two.deserve_raise
-  end
+  # def test_employee_has_good_or_bad_review
+  #   employee_one = Employee.new(name: "Sam")
+  #   refute employee_one.review_rating == "good"
+  #   employee_two = Employee.new(name: "Jean", review_rating: "good")
+  #   assert "good", employee_two.review_rating
+  # end
+  #
+  # def test_does_employee_deserve_a_raise
+  #   employee_two = Employee.new(name: "Jean", review_rating: "good")
+  #   assert_equal true, employee_two.deserve_raise
+  # end
 
   def test_employee_receives_salary_raise
     employee_one = Employee.new(name: "Jean", salary: 80000, review_rating: "good")
@@ -149,10 +149,26 @@ class EmployeeDepartmentTest < Minitest::Test
     assert_equal 330000, accounting.department_salaries
     accounting.distribute_raise(10000) {|x| (x.salary < 85000)}
     assert_equal 340000, accounting.department_salaries
-
-
-
   end
 
+  def test_review_good_or_bad
+    employee_one = Employee.new(name: "Bob")
+    review = Employee.new(name: "Bob", review_text: "Wanda has been an
+    incredibly consistent and effective developer.  Clients are always satisfied
+    with her work, developers are impressed with her productivity, and she's
+    more than willing to help others even when she has a substantial workload of
+    her own.  She is a great asset to Awesome Company, and everyone enjoys
+    working with her.  During the past year, she has largely been devoted to
+    work with the Cement Company, and she is the perfect woman for the job.  We
+    know that work on a single project can become monotonous, however, so over
+    the next few months, we hope to spread some of the Cement Company work to
+    others.  This will also allow Wanda to pair more with others and spread her
+    effectiveness to other projects.").review_text
+    assert employee_one.assign(review)
+    assert true, employee_one.deserve_raise
+  end
 
 end
+
+# negative = /(disagree)|(concerns?)|(tendency)|(issues?)|(sometimes?)|(\W\s?b\But)|(\W\s?b\But)|(D?difficult)|(C?cause)|(S?second)|(less)|(negative)|(consequences?)|(inadequate)|(limitations?)/
+# positive = /(asset)|(pleasure)|(quickly)|(alway?s\swilling)|(H?help\sothers?)|(success?full?y)|([Hh]appy)|([Ww]ill?ing)|([^in]consistent)|([^in][Ee]ffective)|([Ss]atisfied)|(impressed)|(willing)|([Ee]njoy?s)|([Dd]evoted)|([Pp]erfect)/
