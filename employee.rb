@@ -25,10 +25,7 @@ class Employee
       positive_count = review_words.scan(/#{positive}/).count
       p negative_count
       p positive_count
-      positive_count > negative_count ? true : false
-      #   true
-      # end
-
+      p positive_count > negative_count ? true : false
       # review_rating == "good" ? true : false
     end
 

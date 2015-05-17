@@ -23,28 +23,3 @@ class Department
     end
 
 end
-
-#
-# class SalaryLimit
-#
-#   def low_salary
-#     self.each do |item|
-#       yield(item)
-#     end
-#     new_array
-#   end
-#   @employees.low_salary { |salary| salary < 85000}
-#
-# end
-
-# class Array
-#   def translate
-#     new_array = []
-#     self.each do |item|
-#       new_array << yield(item)
-#     end
-#     new_array
-#   end
-# end
-#
-# var = ["Dog", "Perro", "Hund"].translate {|word| word.upcase}
