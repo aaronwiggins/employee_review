@@ -4,13 +4,15 @@
 Create classes, one for employees and one representing departments. They classes should be created so they can track which employees belong to which departments, find who deserves a raise, and how to distribute the raise to the employees.
 
 ##Requirements
+While creating this assignment, use test driven development (TDD). Try to create the error test first, run the test to make sure it fails, then write the code to make it pass.
+
 Employess should be given:
 * name
 * phone number
 * email address
 * salary
 
-Departments should hold employees and the information associated with them
+Departments should hold employees and the information associated with them.
 
 Should be able to:
 
