@@ -256,6 +256,7 @@ class EmployeeDepartmentTest < Minitest::Test
     assert_equal [employee_one], accounting.employees
     assert_equal 80000, employee_one.salary
     assert_equal 6.54, employee_one.determine_review_score
+    #"#{employee_one.determine_review_score}"
     # accounting.distribute_raise(10000) {|x| (x.salary > 0.50)}
     # assert_equal 90000, accounting.department_salaries
   end

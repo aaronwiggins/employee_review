@@ -18,7 +18,7 @@ class Employee
       (V?value?d)|(asset)|(pleasure)|(quickly)|(alway?s\swilling)|(count.on)|
       (H?help\sothers?)|(success?full?y)|([Hh]appy)|([Ww]ill?ing)|
       ([^in]consistent)|([^in][Ee]ffective)|([Ss]atisfied)|(impressed)|(willing)|
-      ([Ee]njoy?s)|([Dd]evoted)|([Pp]erfect)|(O?outstanding)|(Q?quick\w+)|(G?good)/x
+      ([Ee]njoy?s)|([Dd]evoted)|([Pp]erfect)|(O?outstanding)|(Q?quick(\w+)?)|(G?good)/x
     end
 
     def assign(text)
