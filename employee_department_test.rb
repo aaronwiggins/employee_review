@@ -1,14 +1,9 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'byebug'
-#Note: This line is going to fail first.
 require './employee.rb'
 require './department.rb'
 
-# $mock_inputs = []
-# def get_user_input
-#   $mock_inputs.shift
-# end
 
 class EmployeeDepartmentTest < Minitest::Test
 
@@ -21,21 +16,24 @@ class EmployeeDepartmentTest < Minitest::Test
   end
 
   def test_create_employee_name
-    assert "Bob", Employee.new(name: "Bob").name
+    employee_one = Employee.new(name: "Bob")
+    assert_equal "Bob", employee_one.name
   end
 
   def test_create_employee_with_email
-    assert_equal "Bob@email.com", Employee.new(name: "Bob",email: "Bob@email.com").email
+    employee_one = Employee.new(name: "Bob",email: "Bob@email.com")
+    assert_equal "Bob@email.com", employee_one.email
   end
 
   def test_create_employee_phone_number
-    assert_equal "9192223333", Employee.new(name: "Bill", phone_number: "9192223333").phone_number
+    employee_one = Employee.new(phone_number: "9192223333", name: "Bill", )
+    assert_equal "9192223333", employee_one.phone_number
 
   end
 
   def test_create_employee_salary
-    salary = Employee.new(name: "Tina", salary: 95000).salary
-    assert_equal 95000, salary
+    employee_one = Employee.new(name: "Tina", salary: 95000)
+    assert_equal 95000, employee_one.salary
   end
 
   def test_department_can_be_given_an_employee
@@ -82,8 +80,6 @@ class EmployeeDepartmentTest < Minitest::Test
     effective and often innovative communication methods. Sam displays very good
     verbal skills, communicating clearly and concisely. She is careful to keep
     others informed in a timely manner.").review_text
-    assert employee
-    assert review
     assert_equal "Sam demonstrates outstanding written
     communications skills. She listens carefully, asks perceptive questions, and
     quickly comprehends new or highly complex matters. She implements highly
@@ -92,19 +88,25 @@ class EmployeeDepartmentTest < Minitest::Test
     others informed in a timely manner.", review
     assert employee.assign(review)
     assert_equal [review], employee.review_file
+    assert_equal true, employee.deserve_raise
   end
 
-  # def test_employee_has_good_or_bad_review
-  #   employee_one = Employee.new(name: "Sam")
-  #   refute employee_one.review_rating == "good"
-  #   employee_two = Employee.new(name: "Jean", review_rating: "good")
-  #   assert "good", employee_two.review_rating
-  # end
-  #
-  # def test_does_employee_deserve_a_raise
-  #   employee_two = Employee.new(name: "Jean", review_rating: "good")
-  #   assert_equal true, employee_two.deserve_raise
-  # end
+  def test_employee_has_good_or_bad_review
+    employee_one = Employee.new(name: "Sam")
+    refute employee_one.review_rating == "good"
+    employee_two = Employee.new(name: "Jean", review_rating: "good")
+    assert "good", employee_two.review_rating
+  end
+
+  def test_does_employee_deserve_a_raise
+    employee_two = Employee.new(name: "Jean")
+    review = Employee.new(name: "Jean", review_text:"Jim continues to be a valued
+    member of our crew and is a person we are able to count on. Jim's focus to his
+    attendance and punctuality has made our core group operate significantly
+    better over the past 12 months.").review_text
+    employee_two.assign(review)
+    assert_equal true, employee_two.deserve_raise
+  end
 
   def test_employee_receives_salary_raise
     employee_one = Employee.new(name: "Jean", salary: 80000, review_rating: "good")
@@ -152,8 +154,8 @@ class EmployeeDepartmentTest < Minitest::Test
   end
 
   def test_review_good_or_bad
-    employee_one = Employee.new(name: "Bob")
-    review = Employee.new(name: "Bob", review_text: "Wanda has been an
+    employee_one = Employee.new(name: "Wanda")
+    review = Employee.new(name: "Wanda", review_text: "Wanda has been an
     incredibly consistent and effective developer.  Clients are always satisfied
     with her work, developers are impressed with her productivity, and she's
     more than willing to help others even when she has a substantial workload of
@@ -169,8 +171,8 @@ class EmployeeDepartmentTest < Minitest::Test
   end
 
   def test_review_good_or_bad
-    employee_one = Employee.new(name: "Bob")
-    review = Employee.new(name: "Bob", review_text: "Thus far, there have been
+    employee_one = Employee.new(name: "Yvonne")
+    review = Employee.new(name: "Yvonne", review_text: "Thus far, there have been
     two concerns over Yvonne's performance, and both have been discussed with
     her in internal meetings.  First, in some cases, Yvonne takes longer to
     complete tasks than would normally be expected.  This most commonly manifests
@@ -187,8 +189,24 @@ class EmployeeDepartmentTest < Minitest::Test
   end
 
   def test_review_good_or_bad
-    employee_one = Employee.new(name: "Bob")
-    review = Employee.new(name: "Bob", review_text: "Zeke is a very positive
+    employee_one = Employee.new(name: "Xavier")
+    review = Employee.new(name: "Xavier", review_text: "Xavier is a huge asset to
+    SciMed and is a pleasure to work with.  He quickly knocks out tasks assigned
+    to him, implements code that rarely needs to be revisited, and is always
+    willing to help others despite his heavy workload.  When Xavier leaves on
+    vacation, everyone wishes he didn't have to go. Last year, the only concerns
+    with Xavier performance were around ownership.  In the past twelve months,
+    he has successfully taken full ownership of both Acme and Bricks, Inc.
+    Aside from some false starts with estimates on Acme, clients are happy with
+    his work and responsiveness, which is everything that his managers could ask
+    for.").review_text
+    assert employee_one.assign(review)
+    assert_equal true, employee_one.deserve_raise
+  end
+
+  def test_review_good_or_bad
+    employee_one = Employee.new(name: "Wanda")
+    review = Employee.new(name: "Wanda", review_text: "Zeke is a very positive
     person and encourages those around him, but he has not done well technically
     this year.  There are two areas in which Zeke has room for improvement.
     First, when communicating verbally (and sometimes in writing), he has a
@@ -202,32 +220,43 @@ class EmployeeDepartmentTest < Minitest::Test
     same information, and 3) clients are told that certain features are complete
     when they are inadequate.  This communication limitation could be the fault
     of project management, but given that other developers appear to retain more
-    information, this is worth discussing further.").review_text
+    information, this is worth discussing further").review_text
     assert employee_one.assign(review)
     assert_equal false, employee_one.deserve_raise
   end
 
-  def test_review_good_or_bad
+  def test_assert_bad_review
     employee_one = Employee.new(name: "Bob")
-    review = Employee.new(name: "Bob", review_text: "Wanda has been an incredibly
-    consistent and effective developer.  Clients are always satisfied with her
-    work, developers are impressed with her productivity, and she's more than
-    willing to help others even when she has a substantial workload of her own.
-    She is a great asset to Awesome Company, and everyone enjoys working with
-    her.  During the past year, she has largely been devoted to work with the
-    Cement Company, and she is the perfect woman for the job.  We know that work
-    on a single project can become monotonous, however, so over the next few
-    months, we hope to spread some of the Cement Company work to others.  This
-    will also allow Wanda to pair more with others and spread her effectiveness
-    to other projects.").review_text
+    review = Employee.new(name: "Bob", review_text: "Jack needs to work on his
+    communication skills this next year. Effective communication requires more
+    than just giving information when asked, Jack also needs to be proactive
+    when engaging his team as issues come up. Also, Jack needs to work on the
+    tone of his communication so listeners feel comfortable conversing with
+    him.").review_text
     assert employee_one.assign(review)
-    assert_equal true, employee_one.deserve_raise
+    assert_equal false, employee_one.deserve_raise
   end
 
-
-
-
-
-
-
+  def test_check_confidence_ratio
+    employee_one = Employee.new(name: "Xavier", salary: 80000)
+    accounting = Department.new("Accounting")
+    review = Employee.new(name: "Xavier", review_text: "Xavier is a huge asset to
+    SciMed and is a pleasure to work with.  He quickly knocks out tasks assigned
+    to him, implements code that rarely needs to be revisited, and is always
+    willing to help others despite his heavy workload.  When Xavier leaves on
+    vacation, everyone wishes he didn't have to go. Last year, the only concerns
+    with Xavier performance were around ownership.  In the past twelve months,
+    he has successfully taken full ownership of both Acme and Bricks, Inc.
+    Aside from some false starts with estimates on Acme, clients are happy with
+    his work and responsiveness, which is everything that his managers could ask
+    for.").review_text
+    assert employee_one.assign(review)
+    assert_equal true, employee_one.deserve_raise
+    accounting.assign_employee(employee_one)
+    assert_equal [employee_one], accounting.employees
+    assert_equal 80000, employee_one.salary
+    assert_equal 6.54, employee_one.determine_review_score
+    # accounting.distribute_raise(10000) {|x| (x.salary > 0.50)}
+    # assert_equal 90000, accounting.department_salaries
+  end
 end
